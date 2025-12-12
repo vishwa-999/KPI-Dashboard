@@ -1,65 +1,64 @@
-# 13-Week Dynamic Cash Flow Forecast (Growth Curve Model)
+# 💰 Dynamic 13-Week Cash Flow Forecast (Growth Curve Model)
 
-This Google Colab notebook provides a dynamic, forward-looking 13-week cash flow forecast model. Unlike standard monthly forecasts that rely on simple averages, this model uses **scheduled, "lumpy" logic** to identify periods of cash strain (negative net flow) common in high-growth companies.
+This Google Colab notebook provides a dynamic, predictive 13-week cash flow model specifically designed for **Growth Curve** companies experiencing high revenue volatility and "lumpy" expense cycles.
 
-The model is built entirely in Python using **Pandas** for data manipulation and **Plotly** for interactive visualization.
+The model is built entirely in Python using **Pandas** for data manipulation and **Plotly** for interactive visualization. It moves beyond simple averaging to highlight critical short-term liquidity risks.
 
 ---
 
-## 🌟 Key Features
+## 🌟 Key Features & Dashboard Overview
 
-* **Risk-Focused Forecasting:** Payments (Payroll, Ad Spend, etc.) are scheduled to hit on specific weeks, revealing realistic cash shortfalls.
-* **Automated Rolling Balance:** Calculates the continuous flow of cash across the 13 weeks.
-* **Critical KPIs:** Automatically computes the **Minimum Cash Balance**, **Cash Runway**, and **Cash Conversion Ratio**.
-* **Interactive Charts:** Provides a line chart of the closing balance and a bar chart of the weekly net flow, built with Plotly.
+The dashboard is structured to give immediate visibility into the company's short-term financial health, flagging the exact week cash reserves will be lowest.
+
+### Financial Health Tickers
+
+| KPI | Calculation Logic | Growth Curve Relevance |
+| :--- | :--- | :--- |
+| **Minimum Cash Balance** | `MIN(Closing Cash Balance for Weeks 1-13)` | **CRITICAL RISK ALERT.** The lowest cash point in the next quarter, determining if proactive action (delaying AP, seeking credit) is needed. |
+| **Cash Runway (Weeks)** | `Current Cash / Avg. Weekly Net Burn` | **Survival Metric.** How long the company can survive without new financing or a change in burn rate. |
+| **Cash Conversion Ratio** | `Total Inflows / Total Outflows` | **Efficiency Metric.** Measures if the company's growth is cash-efficient (ratio $> 1.0$ is ideal). |
+
+---
+
+## 📈 Visual Forecast Summary
+
+### 1. 13-Week Closing Cash Balance (Risk Monitor)
+
+This line chart shows the rolling cash balance, visually identifying when and where the company will face its tightest liquidity constraint (the Minimum Cash Balance).
+
+![Closing Cash Balance Forecast](images/cash_balance_forecast.png)
+
+### 2. Weekly Net Flow Breakdown
+
+This chart shows the week-over-week net change in cash. Negative bars (red) indicate a week where scheduled outflows (like Payroll or Ad Spend) exceed inflows.
+
+![Net Cash Flow Breakdown](images/net_flow_waterfall.png)
 
 ---
 
 ## 🛠️ Setup and Usage (In Google Colab)
 
-To use this forecast, simply open the `.ipynb` file in Google Colab and run the cells sequentially.
+To run this dynamic forecast, open the notebook in Google Colab and execute the cells sequentially.
 
 ### Prerequisites
 
-* A Google account (to run Colab).
-* No external libraries need installation; **Pandas** and **Plotly** are standard in the Colab environment.
+* A Google Account (to run Colab).
+* **Libraries:** `Pandas`, `NumPy`, `Plotly`, and `Kaleido` (for static image export) are used.
 
 ### Step-by-Step Guide
 
-The notebook is structured in four main sections:
+The notebook is divided into three functional parts:
 
-#### 1. Data Initialization
-* **Goal:** Define the starting cash and the 13-week forecast data.
-* **Action:** **MANUAL INPUT REQUIRED.** The `flow_data` dictionary contains the weekly forecast assumptions (e.g., Payroll only hits on Weeks 4, 8, and 12).
-    * **To Customize:** Edit the values in the `flow_data` dictionary to reflect your company's specific growth projections and payment schedules.
+#### 1. Data Initialization (The Lumpy Logic)
+* **Action:** **MANUAL INPUT REQUIRED.** Locate the `flow_data` dictionary and `STARTING_CASH` variable.
+* **Goal:** Replace the dummy values with your company's specific, *scheduled* payments. For example, enter the full amount of payroll only on its specific payday week (e.g., Week 4, Week 8, etc.) and $\$0$ on all other weeks. This is the heart of the risk model.
 
 #### 2. Core Model Calculation
-* **Goal:** Apply the rolling balance logic to the data.
-* **Action:** Run the cell containing the `create_cashflow_df()` function. This function automatically calculates:
-    * `Total Cash In`
-    * `Total Cash Out`
-    * `Net Cash Flow`
-    * `Opening Cash Balance` (Rolling)
-    * `Closing Cash Balance` (Rolling)
+* **Action:** Run the cell containing the `create_cashflow_df()` function.
+* **Goal:** This function applies the rolling balance formulas to generate the complete 13-week forecast table, calculating the Net Cash Flow and Closing Cash Balance for every week.
 
-#### 3. Dashboard KPIs and Tickers
-* **Goal:** Calculate and display top-line financial health metrics.
-* **Action:** Run this cell to generate the HTML dashboard displaying:
-    * **Cash Runway:** How many weeks of operation are remaining.
-    * **Minimum Cash:** The lowest projected bank balance and the week it occurs (critical risk alert).
-    * **Cash Conversion Ratio:** Inflows / Outflows (ideally > 1.0).
-
-#### 4. Visualization and Detail
-* **Goal:** Plot the key financial trends and show the full data breakdown.
-* **Action:** Run the final cells to generate the following:
-    * **Closing Cash Balance Chart (Line Chart):** Clearly identifies the minimum cash point.
-    * **Net Cash Flow Chart (Bar Chart):** Shows which weeks are cash-positive vs. cash-negative.
-    * **Detailed Forecast Table:** The complete 13-week table showing all line-item figures.
-
----
-
-### 📚 Why This Model is Better for Growth Companies
-
-This model avoids the smoothing effect of traditional financial statements. By accurately scheduling large, periodic payments, it forces the user to confront the short-term liquidity risk, answering the question: **"Can we cover next week's payroll/ad bill?"**
+#### 3. Dashboard Generation & Export
+* **Action:** Run the final cells.
+* **Goal:** This step automatically calculates the **KPIs**, generates the interactive **Plotly charts**, and saves the charts as `.png` files to the local `images/` directory for use in this `README.md`.
 
 ---
